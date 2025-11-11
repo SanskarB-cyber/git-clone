@@ -1,172 +1,15 @@
+// src/ui/App.tsx
 import React, { useEffect, useState } from 'react';
+import LoginPage from './LoginPage';
+import { RepoHeader } from './RepoHeader';
+import { FileEditor } from './FileEditor';
+import { History } from './History';
+import { Branches } from './Branches';
 
-// Placeholder components - these would need to be created/enhanced
-// to match the visual design and functionality depicted in the image.
-// For now, they are just functional components returning basic divs.
-
-// --- Placeholder RepoHeader Component ---
-const RepoHeader: React.FC<{
-  owner: string;
-  repo: string;
-  setOwner: (owner: string) => void;
-  setRepo: (repo: string) => void;
-  onInit: () => void;
-  onRefresh: () => void;
-}> = ({ owner, repo, setOwner, setRepo, onInit, onRefresh }) => (
-  <div style={{
-    display: 'flex',
-    alignItems: 'center',
-    padding: '20px',
-    borderRadius: '15px',
-    background: '#BAEDD2', // Light Teal/Mint Green
-    marginBottom: '20px',
-    boxShadow: '0 4px 10px rgba(0,0,0,0.05)',
-    gap: '15px'
-  }}>
-    <h2 style={{ margin: 0, fontSize: '1.8em', color: '#333' }}>Repo Header</h2>
-    <input
-      type="text"
-      value={owner}
-      onChange={(e) => setOwner(e.target.value)}
-      placeholder="Owner"
-      style={{
-        padding: '10px 15px',
-        borderRadius: '8px',
-        border: '1px solid #ccc',
-        flexGrow: 1,
-        maxWidth: '150px'
-      }}
-    />
-    <input
-      type="text"
-      value={repo}
-      onChange={(e) => setRepo(e.target.value)}
-      placeholder="Repo"
-      style={{
-        padding: '10px 15px',
-        borderRadius: '8px',
-        border: '1px solid #ccc',
-        flexGrow: 1,
-        maxWidth: '180px'
-      }}
-    />
-    <button
-      onClick={onInit}
-      style={{
-        padding: '10px 20px',
-        borderRadius: '8px',
-        border: 'none',
-        background: '#4CAF50', // Green
-        color: 'white',
-        fontWeight: 'bold',
-        cursor: 'pointer',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '5px'
-      }}
-    >
-      Init Repo <span style={{fontSize: '1.2em'}}>🚀</span>
-    </button>
-    <button
-      onClick={onRefresh}
-      style={{
-        padding: '10px 20px',
-        borderRadius: '8px',
-        border: 'none',
-        background: '#2196F3', // Blue
-        color: 'white',
-        fontWeight: 'bold',
-        cursor: 'pointer',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '5px'
-      }}
-    >
-      Refresh <span style={{fontSize: '1.2em'}}>🔄</span>
-    </button>
-    <span style={{marginLeft: 'auto', fontSize: '2em'}}>🚀</span> {/* Icon */}
-  </div>
-);
-
-// --- Placeholder FileEditor Component ---
-const FileEditor: React.FC<{ owner: string; repo: string; onCommitted: () => void }> = ({ onCommitted }) => (
-  <div style={{ padding: '20px', borderRadius: '15px', background: '#D6FAD4', boxShadow: '0 4px 10px rgba(0,0,0,0.05)' }}> {/* Light Green */}
-    <h3 style={{marginTop: 0}}>File Editor</h3>
-    <pre style={{
-      background: '#e0e0e0', // Lighter grey for code background
-      padding: '15px',
-      borderRadius: '8px',
-      minHeight: '150px',
-      overflow: 'auto',
-      fontFamily: 'monospace',
-      color: '#333'
-    }}>
-      {`// Example code\nimport React from 'react';\n\nfunction MyComponent() {\n  return (\n    <div>\n      <h1>Hello, Colorful World!</h1>\n    </div>\n  );\n}\n\nexport default MyComponent;`}
-    </pre>
-    <input
-      type="text"
-      placeholder="Commit Message"
-      style={{
-        width: 'calc(100% - 20px)',
-        padding: '10px',
-        borderRadius: '8px',
-        border: '1px solid #ccc',
-        marginTop: '15px',
-        marginBottom: '10px'
-      }}
-    />
-    <button
-      onClick={onCommitted}
-      style={{
-        padding: '10px 20px',
-        borderRadius: '8px',
-        border: 'none',
-        background: '#FFD700', // Gold/Yellow
-        color: '#333',
-        fontWeight: 'bold',
-        cursor: 'pointer'
-      }}
-    >
-      Commit
-    </button>
-  </div>
-);
-
-// --- Placeholder History Component ---
-const History: React.FC<{ owner: string; repo: string }> = () => (
-  <div style={{ padding: '20px', borderRadius: '15px', background: '#FFC0CB', boxShadow: '0 4px 10px rgba(0,0,0,0.05)' }}> {/* Pale Pink/Coral */}
-    <h3 style={{marginTop: 0}}>History</h3>
-    <ul style={{ listStyle: 'none', padding: 0 }}>
-      <li style={{ marginBottom: '8px' }}>Commit: Initial setup (1 week ago)</li>
-      <li style={{ marginBottom: '8px' }}>Commit: Added file editor (3 days ago)</li>
-      <li style={{ marginBottom: '8px' }}>Commit: Refactored components (1 day ago)</li>
-      {/* ... more history items */}
-    </ul>
-  </div>
-);
-
-// --- Placeholder Branches Component ---
-const Branches: React.FC<{ owner: string; repo: string }> = () => (
-  <div style={{ padding: '20px', borderRadius: '15px', background: '#FFECB3', boxShadow: '0 4px 10px rgba(0,0,0,0.05)', marginTop: '20px' }}> {/* Soft Orange/Peach */}
-    <h3 style={{marginTop: 0}}>Branches</h3>
-    <ul style={{ listStyle: 'none', padding: 0 }}>
-      <li style={{ marginBottom: '8px', display: 'flex', alignItems: 'center' }}>
-        <span style={{marginRight: '8px'}}>📁</span> main <span style={{marginLeft: 'auto', color: '#4CAF50'}}>✓</span>
-      </li>
-      <li style={{ marginBottom: '8px', display: 'flex', alignItems: 'center' }}>
-        <span style={{marginRight: '8px'}}>📄</span> feature/new-ui
-      </li>
-      <li style={{ marginBottom: '8px', display: 'flex', alignItems: 'center' }}>
-        <span style={{marginRight: '8px'}}>📄</span> bugfix/typo
-      </li>
-    </ul>
-  </div>
-);
-
-// --- Main App Component ---
 type Change = { filepath: string; head: number; worktree: number; stage: number };
 
 export default function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [owner, setOwner] = useState('demo');
   const [repo, setRepo] = useState('hello-world');
   const [tree, setTree] = useState<{ type: 'file' | 'dir'; path: string }[]>([]);
@@ -185,20 +28,20 @@ export default function App() {
 
   async function refresh() {
     // Simulate API calls
-    const dummyTree = [
+    const dummyTree: { type: 'file' | 'dir'; path: string }[] = [
       { type: 'dir', path: 'src' },
       { type: 'file', path: 'src/index.js' },
       { type: 'file', path: 'README.md' },
     ];
     setTree(dummyTree);
 
-    const dummyChanges = [
+    const dummyChanges: Change[] = [
       { filepath: 'src/index.js', head: 1, worktree: 1, stage: 0 },
       { filepath: 'README.md', head: 0, worktree: 1, stage: 0 },
     ];
     setChanges(dummyChanges);
 
-    // Actual API calls (uncomment when you have your backend running)
+    // Real API calls can replace the above when backend is available.
     // const t = await call(`/api/repos/${owner}/${repo}/tree`);
     // setTree(t.tree || []);
     // const s = await call(`/api/repos/${owner}/${repo}/status`);
@@ -206,93 +49,82 @@ export default function App() {
   }
 
   useEffect(() => {
-    refresh().catch(() => {});
-  }, [owner, repo]);
+    if (isLoggedIn) refresh().catch(() => {});
+  }, [owner, repo, isLoggedIn]);
+
+  if (!isLoggedIn) {
+    return <LoginPage onLoginSuccess={() => setIsLoggedIn(true)} />;
+  }
 
   return (
-    <div style={{
-      fontFamily: 'Inter, system-ui, Arial, sans-serif',
-      padding: '20px',
-      background: '#F0F2F5', // General UI background - very light grey
-      minHeight: '100vh',
-      boxSizing: 'border-box'
-    }}>
-      <RepoHeader owner={owner} repo={repo} setOwner={setOwner} setRepo={setRepo} onInit={initRepo} onRefresh={refresh} />
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: '1fr 1fr',
-        gap: '20px',
-        marginTop: '20px'
-      }}>
-        <div>
-          {/* Files Card */}
-          <div style={{
-            padding: '20px',
-            borderRadius: '15px',
-            background: '#E6E6FA', // Soft Lavender
-            boxShadow: '0 4px 10px rgba(0,0,0,0.05)',
-            minHeight: '200px',
-            marginBottom: '20px' // Margin for separation
-          }}>
-            <h3 style={{marginTop: 0}}>Files</h3>
-            {tree.length === 0 ? (
-              <div style={{textAlign: 'center', color: '#666'}}>No files yet</div>
-            ) : (
-              // Simplified file tree for demonstration.
-              // A real file tree would involve more complex rendering with indentation and connections.
-              <ul style={{ listStyle: 'none', padding: 0 }}>
-                {tree.map((t) => (
-                  <li key={t.path} style={{
-                    marginBottom: '5px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    backgroundColor: t.path.includes('index.js') ? '#8BC34A' : (t.path.includes('README.md') ? '#E91E63' : 'transparent'), // Example conditional background for files
-                    color: t.path.includes('index.js') || t.path.includes('README.md') ? 'white' : 'inherit',
-                    padding: '5px 8px',
-                    borderRadius: '5px'
-                  }}>
-                    <span style={{marginRight: '8px', fontSize: '1.2em'}}>{t.type === 'dir' ? '📁' : '📄'}</span> {t.path}
-                  </li>
-                ))}
-              </ul>
-            )}
+    <div style={{ fontFamily: 'Inter, system-ui, Arial, sans-serif', minHeight: '100vh', background: '#fafafa', padding: 20 }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+        <RepoHeader owner={owner} repo={repo} setOwner={setOwner} setRepo={setRepo} onInit={initRepo} onRefresh={refresh} />
+
+        <h2 style={{ marginTop: 16, marginBottom: 12 }}>Overview</h2>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 16 }}>
+          {/* Seven colorful cards */}
+          <div style={{ padding: 18, borderRadius: 12, color: 'white', background: '#FF6B6B', boxShadow: '0 6px 18px rgba(0,0,0,0.08)' }}>
+            <h3 style={{ margin: 0 }}>Repository</h3>
+            <p style={{ marginTop: 8, opacity: 0.95 }}>{owner}/{repo}</p>
           </div>
-          <Branches owner={owner} repo={repo} />
+
+          <div style={{ padding: 18, borderRadius: 12, color: 'white', background: '#6B8CFF', boxShadow: '0 6px 18px rgba(0,0,0,0.08)' }}>
+            <h3 style={{ margin: 0 }}>Branches</h3>
+            <p style={{ marginTop: 8, opacity: 0.95 }}>main, feature/new-ui</p>
+          </div>
+
+          <div style={{ padding: 18, borderRadius: 12, color: 'white', background: '#FFD166', boxShadow: '0 6px 18px rgba(0,0,0,0.08)' }}>
+            <h3 style={{ margin: 0 }}>Files</h3>
+            <p style={{ marginTop: 8, opacity: 0.95 }}>{tree.length} items</p>
+          </div>
+
+          <div style={{ padding: 18, borderRadius: 12, color: 'white', background: '#06D6A0', boxShadow: '0 6px 18px rgba(0,0,0,0.08)' }}>
+            <h3 style={{ margin: 0 }}>History</h3>
+            <p style={{ marginTop: 8, opacity: 0.95 }}>Recent commits</p>
+          </div>
+
+          <div style={{ padding: 18, borderRadius: 12, color: 'white', background: '#8338EC', boxShadow: '0 6px 18px rgba(0,0,0,0.08)' }}>
+            <h3 style={{ margin: 0 }}>Pull Requests</h3>
+            <p style={{ marginTop: 8, opacity: 0.95 }}>No open PRs</p>
+          </div>
+
+          <div style={{ padding: 18, borderRadius: 12, color: 'white', background: '#FF8FAB', boxShadow: '0 6px 18px rgba(0,0,0,0.08)' }}>
+            <h3 style={{ margin: 0 }}>CI</h3>
+            <p style={{ marginTop: 8, opacity: 0.95 }}>All checks passing</p>
+          </div>
+
+          <div style={{ padding: 18, borderRadius: 12, color: 'white', background: '#4CC9F0', boxShadow: '0 6px 18px rgba(0,0,0,0.08)' }}>
+            <h3 style={{ margin: 0 }}>Actions</h3>
+            <p style={{ marginTop: 8, opacity: 0.95 }}>Init / Refresh / Commit</p>
+          </div>
         </div>
-        <div>
-          <FileEditor owner={owner} repo={repo} onCommitted={refresh} />
-          <History owner={owner} repo={repo} />
-          {/* Changes Card */}
-          <div style={{
-            padding: '20px',
-            borderRadius: '15px',
-            background: '#FFFACD', // Light Yellow
-            boxShadow: '0 4px 10px rgba(0,0,0,0.05)',
-            marginTop: '20px', // Margin for separation
-            minHeight: '150px'
-          }}>
-            <h3 style={{marginTop: 0}}>Changes</h3>
+
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 320px', gap: 16, marginTop: 22 }}>
+          <div>
+            <FileEditor owner={owner} repo={repo} onCommitted={refresh} />
+
+            <div style={{ marginTop: 16 }}>
+              <History owner={owner} repo={repo} />
+            </div>
+          </div>
+
+          <aside style={{ background: '#fff', padding: 14, borderRadius: 10, boxShadow: '0 6px 18px rgba(0,0,0,0.06)' }}>
+            <h4 style={{ marginTop: 0 }}>Changes</h4>
             {changes.length === 0 ? (
-              <div style={{textAlign: 'center', color: '#666'}}>No pending changes</div>
+              <div style={{ color: '#666' }}>No pending changes</div>
             ) : (
               <ul style={{ listStyle: 'none', padding: 0 }}>
-                {changes.map((change, index) => (
-                  <li key={index} style={{ marginBottom: '8px', display: 'flex', alignItems: 'center' }}>
-                    <span style={{
-                      display: 'inline-block',
-                      width: '10px',
-                      height: '10px',
-                      borderRadius: '50%',
-                      backgroundColor: index % 3 === 0 ? '#2196F3' : (index % 3 === 1 ? '#4CAF50' : '#FFC107'), // Different colored dots
-                      marginRight: '10px'
-                    }}></span>
-                    {change.filepath}
-                    {/* You'd parse and display head/worktree/stage more visually here */}
+                {changes.map((c, i) => (
+                  <li key={i} style={{ padding: '8px 6px', borderRadius: 8, display: 'flex', alignItems: 'center', gap: 8, background: i % 2 === 0 ? '#fbfbfb' : 'transparent' }}>
+                    <span style={{ width: 8, height: 8, borderRadius: '50%', background: i % 3 === 0 ? '#2196F3' : (i % 3 === 1 ? '#4CAF50' : '#FFC107') }} />
+                    <span style={{ fontSize: '0.95rem' }}>{c.filepath}</span>
                   </li>
                 ))}
               </ul>
             )}
-          </div>
+          </aside>
         </div>
       </div>
     </div>
