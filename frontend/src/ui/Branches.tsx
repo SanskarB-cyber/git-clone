@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 
-export function Branches({ owner, repo }:{ owner:string; repo:string }){
+export function Branches({ owner, repo, userId }:{ owner:string; repo:string; userId: string }){
   const [branches, setBranches] = useState<string[]>([])
   const [current, setCurrent] = useState<string | null>(null)
   const [newBranch, setNewBranch] = useState('feature/x')
 
   async function refresh(){
-    const r = await fetch(`/api/repos/${owner}/${repo}/branches`)
+    const r = await fetch(`/api/repos/${owner}/${repo}/branches?owner_id=${encodeURIComponent(userId)}`)
     if(r.ok){
       const data = await r.json()
       setBranches(data.branches || [])
@@ -14,13 +14,13 @@ export function Branches({ owner, repo }:{ owner:string; repo:string }){
     }
   }
 
-  useEffect(()=>{ refresh().catch(()=>{}) }, [owner, repo])
+  useEffect(()=>{ refresh().catch(()=>{}) }, [owner, repo, userId])
 
   async function createBranch(){
     await fetch(`/api/repos/${owner}/${repo}/branch`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name: newBranch })
+      body: JSON.stringify({ name: newBranch, owner_id: userId })
     })
     setNewBranch('')
     await refresh()
@@ -30,7 +30,7 @@ export function Branches({ owner, repo }:{ owner:string; repo:string }){
     await fetch(`/api/repos/${owner}/${repo}/checkout`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ref })
+      body: JSON.stringify({ ref, owner_id: userId })
     })
     await refresh()
   }

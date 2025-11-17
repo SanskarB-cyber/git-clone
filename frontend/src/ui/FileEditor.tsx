@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-export function FileEditor({ owner, repo, onCommitted }:{ owner:string; repo:string; onCommitted: ()=>void }){
+export function FileEditor({ owner, repo, userId, onCommitted }:{ owner:string; repo:string; userId: string; onCommitted: ()=>void }){
   const [filepath, setFilepath] = useState('README.md')
   const [content, setContent] = useState('# Hello\n')
   const [message, setMessage] = useState('feat: initial commit')
@@ -15,7 +15,7 @@ export function FileEditor({ owner, repo, onCommitted }:{ owner:string; repo:str
     await call(`/api/repos/${owner}/${repo}/file`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ filepath, content })
+      body: JSON.stringify({ filepath, content, owner_id: userId })
     })
   }
 
@@ -24,7 +24,7 @@ export function FileEditor({ owner, repo, onCommitted }:{ owner:string; repo:str
     await call(`/api/repos/${owner}/${repo}/commit`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message })
+      body: JSON.stringify({ message, owner_id: userId })
     })
     onCommitted()
   }

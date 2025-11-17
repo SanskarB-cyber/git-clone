@@ -2,18 +2,18 @@ import React, { useEffect, useState } from 'react'
 
 type Entry = { oid: string; commit: { message:string; author:{ name:string; email:string; timestamp:number } } }
 
-export function History({ owner, repo }:{ owner:string; repo:string }){
+export function History({ owner, repo, userId }:{ owner:string; repo:string; userId: string }){
   const [log, setLog] = useState<Entry[]>([])
 
   async function load(){
-    const r = await fetch(`/api/repos/${owner}/${repo}/log`)
+    const r = await fetch(`/api/repos/${owner}/${repo}/log?owner_id=${encodeURIComponent(userId)}`)
     if(r.ok){
       const data = await r.json()
       setLog(data.log || [])
     }
   }
 
-  useEffect(()=>{ load().catch(()=>{}) }, [owner, repo])
+  useEffect(()=>{ load().catch(()=>{}) }, [owner, repo, userId])
 
   return (
     <div style={{marginBottom:12}}>

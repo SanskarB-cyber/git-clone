@@ -1,19 +1,56 @@
 // src/ui/App.tsx
 import React, { useEffect, useState } from 'react';
 import LoginPage from './LoginPage';
+import { RepoSetup } from './RepoSetup';
 import { RepoHeader } from './RepoHeader';
 import { FileEditor } from './FileEditor';
 import { History } from './History';
 import { Branches } from './Branches';
+import { IDE } from './IDE';
+import { getCurrentUser, signOut, onAuthStateChange } from '../lib/supabaseClient';
 
 type Change = { filepath: string; head: number; worktree: number; stage: number };
+type AuthUser = { id: string; email: string; username?: string } | null;
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [owner, setOwner] = useState('demo');
-  const [repo, setRepo] = useState('hello-world');
+  const [user, setUser] = useState<AuthUser>(null);
+  const [owner, setOwner] = useState('');
+  const [repo, setRepo] = useState('');
+  const [repoInitialized, setRepoInitialized] = useState(false);
   const [tree, setTree] = useState<{ type: 'file' | 'dir'; path: string }[]>([]);
   const [changes, setChanges] = useState<Change[]>([]);
+  const [showIDE, setShowIDE] = useState(true);
+
+  // Check auth state on mount
+  useEffect(() => {
+    const checkAuth = async () => {
+      const currentUser = await getCurrentUser();
+      if (currentUser) {
+        setUser(currentUser as AuthUser);
+        setOwner(currentUser.username || currentUser.email?.split('@')[0] || 'user');
+        setIsLoggedIn(true);
+      }
+    };
+
+    checkAuth();
+
+    // Listen to auth changes
+    const { data } = onAuthStateChange((user) => {
+      if (user) {
+        setUser(user as AuthUser);
+        setOwner(user.username || user.email?.split('@')[0] || 'user');
+        setIsLoggedIn(true);
+      } else {
+        setUser(null);
+        setIsLoggedIn(false);
+      }
+    });
+
+    return () => {
+      data?.subscription.unsubscribe();
+    };
+  }, []);
 
   async function call(path: string, init?: RequestInit) {
     const r = await fetch(path, init);
@@ -22,7 +59,14 @@ export default function App() {
   }
 
   async function initRepo() {
-    await call(`/api/repos/${owner}/${repo}/init`, { method: 'POST' });
+    if (!user?.id) {
+      throw new Error('User not authenticated');
+    }
+    await call(`/api/repos/${owner}/${repo}/init`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ owner_id: user.id }),
+    });
     await refresh();
   }
 
@@ -56,10 +100,97 @@ export default function App() {
     return <LoginPage onLoginSuccess={() => setIsLoggedIn(true)} />;
   }
 
+  // Show repo setup if repo not initialized
+  if (!repoInitialized || !repo) {
+    return <RepoSetup owner={owner} userId={user?.id || ''} onRepoCreated={(repoName) => {
+      setRepo(repoName);
+      setRepoInitialized(true);
+    }} />;
+  }
+
+  // Show IDE view
+  if (showIDE) {
+    return (
+      <div>
+        <div style={{ padding: '8px 16px', background: '#1f2937', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <span style={{ color: 'white', fontWeight: 600 }}>
+            GitTogether IDE • {owner}/{repo} {user?.email && <span style={{ fontSize: '12px', color: '#9ca3af' }}>({user.email})</span>}
+          </span>
+          <div style={{ display: 'flex', gap: '8px' }}>
+            <button
+              onClick={() => setShowIDE(false)}
+              style={{
+                padding: '6px 12px',
+                background: '#6B7280',
+                color: 'white',
+                border: 'none',
+                borderRadius: '4px',
+                cursor: 'pointer',
+                fontSize: '12px',
+              }}
+            >
+              Dashboard
+            </button>
+            <button
+              onClick={async () => {
+                await signOut();
+                setIsLoggedIn(false);
+                setUser(null);
+              }}
+              style={{
+                padding: '6px 12px',
+                background: '#ef4444',
+                color: 'white',
+                border: 'none',
+                borderRadius: '4px',
+                cursor: 'pointer',
+                fontSize: '12px',
+              }}
+            >
+              Logout
+            </button>
+          </div>
+        </div>
+        <IDE
+          owner={owner}
+          repo={repo}
+          userId={user?.id || ''}
+          onCommit={async (msg) => {
+            await call(`/api/repos/${owner}/${repo}/commit`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ message: msg, author_name: owner, author_email: user?.email || owner + '@example.com', owner_id: user?.id }),
+            });
+          }}
+          onRefresh={refresh}
+        />
+      </div>
+    );
+  }
+
   return (
     <div style={{ fontFamily: 'Inter, system-ui, Arial, sans-serif', minHeight: '100vh', background: '#fafafa', padding: 20 }}>
       <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-        <RepoHeader owner={owner} repo={repo} setOwner={setOwner} setRepo={setRepo} onInit={initRepo} onRefresh={refresh} />
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+          <div>
+            <RepoHeader owner={owner} repo={repo} setOwner={setOwner} setRepo={setRepo} onInit={initRepo} onRefresh={refresh} />
+          </div>
+          <button
+            onClick={() => setShowIDE(true)}
+            style={{
+              padding: '8px 16px',
+              background: '#1f2937',
+              color: 'white',
+              border: 'none',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              fontSize: '14px',
+              fontWeight: 600,
+            }}
+          >
+            💻 Open IDE
+          </button>
+        </div>
 
         <h2 style={{ marginTop: 16, marginBottom: 12 }}>Overview</h2>
 
@@ -103,7 +234,7 @@ export default function App() {
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 320px', gap: 16, marginTop: 22 }}>
           <div>
-            <FileEditor owner={owner} repo={repo} onCommitted={refresh} />
+            <FileEditor owner={owner} repo={repo} userId={user?.id || ''} onCommitted={refresh} />
 
             <div style={{ marginTop: 16 }}>
               <History owner={owner} repo={repo} />
