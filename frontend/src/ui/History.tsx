@@ -7,8 +7,6 @@ type Commit = { message: string; author: Author };
 type LogEntry = {
   oid: string;
   commit: Commit;
-  // We will simulate these for the UI since the simplified backend doesn't send diff stats yet
-  filesChanged?: { path: string; additions: number; deletions: number }[]; 
 };
 
 interface HistoryProps {
@@ -45,17 +43,9 @@ export function History({ owner, repo, userId, currentBranch, onBranchChange, on
       const cRes = await fetch(`/api/repos/${owner}/${repo}/log?owner_id=${encodeURIComponent(userId)}&branch=${currentBranch}`);
       const cData = await cRes.json();
       
-      // Enrich data with mock diffs for UI visualization (since backend is "lite")
-      const enrichedLog = (cData.log || []).map((entry: any) => ({
-        ...entry,
-        filesChanged: [
-            { path: 'src/App.tsx', additions: Math.floor(Math.random() * 10), deletions: Math.floor(Math.random() * 5) },
-            { path: 'README.md', additions: 1, deletions: 0 }
-        ]
-      }));
-      
-      setLog(enrichedLog);
-      if (enrichedLog.length > 0) setSelectedCommit(enrichedLog[0]);
+      const logData = cData.log || [];
+      setLog(logData);
+      if (logData.length > 0) setSelectedCommit(logData[0]);
     } catch (e) {
       console.error(e);
     } finally {
@@ -118,8 +108,6 @@ export function History({ owner, repo, userId, currentBranch, onBranchChange, on
           </div>
           <nav className="hidden md:flex items-center gap-8">
             <a className="text-sm font-medium leading-normal text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary cursor-pointer" onClick={onShowIDE}>Code</a>
-            <a className="text-sm font-medium leading-normal text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary cursor-pointer">Issues</a>
-            <a className="text-sm font-medium leading-normal text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary cursor-pointer">Pull Requests</a>
             <a className="text-sm font-medium leading-normal text-gray-800 dark:text-white cursor-pointer font-bold border-b-2 border-primary pb-0.5">Commits</a>
           </nav>
         </div>
@@ -336,35 +324,14 @@ export function History({ owner, repo, userId, currentBranch, onBranchChange, on
                             </div>
                         </div>
 
-                        {/* Files Changed */}
-                        <div className="border-t border-gray-200 dark:border-[#232f48] pt-4">
-                            <div className="flex justify-between items-center mb-3">
-                                <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">Changed Files</p>
-                                <span className="bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-xs px-2 py-0.5 rounded-full">{selectedCommit.filesChanged?.length || 0}</span>
-                            </div>
-                            <ul className="space-y-2">
-                                {selectedCommit.filesChanged?.map((file, idx) => (
-                                    <li key={idx} className="flex items-center justify-between p-2 rounded hover:bg-gray-200 dark:hover:bg-[#232f48] transition-colors group">
-                                        <div className="flex items-center gap-2 overflow-hidden">
-                                            <span className="material-symbols-outlined text-gray-400 text-lg">description</span>
-                                            <span className="text-sm text-gray-700 dark:text-gray-300 truncate">{file.path}</span>
-                                        </div>
-                                        <div className="flex items-center gap-2 shrink-0 text-xs font-mono opacity-70 group-hover:opacity-100">
-                                            <span className="text-green-600 dark:text-green-400">+{file.additions}</span>
-                                            <span className="text-gray-300">|</span>
-                                            <span className="text-red-600 dark:text-red-400">-{file.deletions}</span>
-                                        </div>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
                     </div>
                     
-                    <div className="p-4 border-t border-gray-200 dark:border-[#232f48] bg-white dark:bg-[#1e293b] flex gap-2">
-                        <button className="flex-1 flex items-center justify-center rounded-lg h-9 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 text-sm font-bold hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
-                            Revert
-                        </button>
-                        <button className="flex-1 flex items-center justify-center rounded-lg h-9 bg-primary text-white text-sm font-bold hover:bg-blue-600 transition-colors">
+                    <div className="p-4 border-t border-gray-200 dark:border-[#232f48] bg-white dark:bg-[#1e293b]">
+                        <button
+                            onClick={onShowIDE}
+                            className="w-full flex items-center justify-center gap-2 rounded-lg h-9 bg-primary text-white text-sm font-bold hover:bg-blue-600 transition-colors"
+                        >
+                            <span className="material-symbols-outlined text-lg">code</span>
                             Browse Files
                         </button>
                     </div>

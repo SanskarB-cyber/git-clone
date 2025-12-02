@@ -10,14 +10,6 @@ import { createClient } from '@supabase/supabase-js';
 import { v4 as uuidv4 } from 'uuid';
 import dotenv from 'dotenv';
 import { createHash } from 'crypto';
-import { spawn } from 'child_process';
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import { GoogleGenerativeAI } from '@google/generative-ai';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 dotenv.config();
 
@@ -29,17 +21,10 @@ app.use(morgan('dev'));
 const PORT = process.env.PORT || 4000;
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_KEY = process.env.SUPABASE_KEY;
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
 if (!SUPABASE_URL || !SUPABASE_KEY) {
   console.error('ERROR: SUPABASE_URL and SUPABASE_KEY must be set in .env');
   process.exit(1);
-}
-
-// Initialize AI
-let genAI = null;
-if (GEMINI_API_KEY) {
-  genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 }
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -439,20 +424,6 @@ app.get('/api/repos/:owner/:repo/log', async (req, res) => {
   } catch (e) {
     res.status(500).json({ ok: false, error: e.message });
   }
-});
-
-// 11. Terminal/Execution (Existing logic)
-app.post('/api/terminal/execute', async (req, res) => {
-    // ... (Keep existing terminal logic from previous answer if you want it, 
-    // or standard mock response below) ...
-    res.json({ ok: true, output: "Terminal execution simulated." });
-});
-
-app.post('/api/ai/chat', async (req, res) => {
-   // ... (AI Logic) ...
-   if(!genAI) return res.status(503).json({error: "AI not configured"});
-   // Simple echo for now unless you copy full AI logic
-   res.json({ ok: true, response: "AI response simulated." });
 });
 
 // List Repos

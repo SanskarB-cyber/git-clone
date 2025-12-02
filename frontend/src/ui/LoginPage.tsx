@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { signUp, signIn } from '../lib/supabaseClient';
 
@@ -73,204 +72,73 @@ export default function LoginPage({ onLoginSuccess }: LoginPageProps) {
   };
 
   return (
-    <div
-      style={{
-        minHeight: '100vh',
-        background: '#ffffff',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontFamily: 'Inter, system-ui, Arial, sans-serif',
-        padding: '20px',
-        position: 'relative',
-        overflow: 'hidden',
-      }}
-    >
-      {/* Animated background elements */}
-      <div
-        style={{
-          position: 'fixed',
-          top: '-50%',
-          right: '-10%',
-          width: '500px',
-          height: '500px',
-          background: 'radial-gradient(circle, rgba(59, 130, 246, 0.05) 0%, transparent 70%)',
-          borderRadius: '50%',
-          pointerEvents: 'none',
-        }}
-      />
-      <div
-        style={{
-          position: 'fixed',
-          bottom: '-30%',
-          left: '-20%',
-          width: '600px',
-          height: '600px',
-          background: 'radial-gradient(circle, rgba(139, 92, 246, 0.04) 0%, transparent 70%)',
-          borderRadius: '50%',
-          pointerEvents: 'none',
-        }}
-      />
+    <div className="min-h-screen bg-background-dark flex justify-center items-center font-display p-5 relative overflow-hidden">
+      {/* Background decorative elements */}
+      <div className="fixed top-[-50%] right-[-10%] w-[500px] h-[500px] bg-[radial-gradient(circle,rgba(59,130,246,0.08)_0%,transparent_70%)] rounded-full pointer-events-none" />
+      <div className="fixed bottom-[-30%] left-[-20%] w-[600px] h-[600px] bg-[radial-gradient(circle,rgba(139,92,246,0.06)_0%,transparent_70%)] rounded-full pointer-events-none" />
 
-      <div
-        style={{
-          background: 'white',
-          borderRadius: '24px',
-          padding: '56px 48px',
-          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.06)',
-          width: '100%',
-          maxWidth: '480px',
-          position: 'relative',
-          zIndex: 1,
-          border: '1px solid rgba(0, 0, 0, 0.04)',
-        }}
-      >
+      <div className="bg-panel-dark rounded-2xl p-12 shadow-2xl w-full max-w-[480px] relative z-10 border border-border-dark">
         {/* Header Section */}
-        <div style={{ marginBottom: '40px' }}>
-          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
-            <div
-              style={{
-                width: '64px',
-                height: '64px',
-                background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
-                borderRadius: '16px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '32px',
-                boxShadow: '0 8px 24px rgba(59, 130, 246, 0.2)',
-              }}
-            >
-              🔐
+        <div className="mb-10">
+          <div className="flex justify-center mb-5">
+            <div className="w-16 h-16 bg-gradient-to-br from-primary to-purple-500 rounded-2xl flex items-center justify-center shadow-lg shadow-primary/20">
+              <span className="material-symbols-outlined text-white text-3xl">data_object</span>
             </div>
           </div>
-          <h1
-            style={{
-              textAlign: 'center',
-              color: '#0f172a',
-              marginBottom: '8px',
-              fontSize: '32px',
-              fontWeight: 800,
-              letterSpacing: '-0.5px',
-            }}
-          >
+          <h1 className="text-center text-white mb-2 text-3xl font-bold tracking-tight">
             Welcome to GitTogether
           </h1>
-          <p
-            style={{
-              textAlign: 'center',
-              color: '#64748b',
-              fontSize: '15px',
-              marginBottom: '0',
-            }}
-          >
+          <p className="text-center text-gray-400 text-sm">
             {isSignUp ? 'Create your GitTogether account' : 'Sign in to your account'}
           </p>
         </div>
 
         {/* Tab Navigation */}
-        <div
-          style={{
-            display: 'flex',
-            marginBottom: '32px',
-            gap: '0',
-            background: '#f1f5f9',
-            padding: '4px',
-            borderRadius: '10px',
-          }}
-        >
+        <div className="flex mb-8 gap-0 bg-surface-dark p-1 rounded-xl">
           <button
             onClick={() => setIsSignUp(false)}
-            style={{
-              flex: 1,
-              padding: '12px 16px',
-              background: !isSignUp ? 'white' : 'transparent',
-              color: !isSignUp ? '#0f172a' : '#64748b',
-              border: 'none',
-              borderRadius: '8px',
-              cursor: 'pointer',
-              fontWeight: !isSignUp ? 700 : 500,
-              fontSize: '14px',
-              transition: 'all 0.3s ease',
-              boxShadow: !isSignUp ? '0 2px 8px rgba(0, 0, 0, 0.06)' : 'none',
-            }}
+            className={`flex-1 py-3 px-4 rounded-lg cursor-pointer text-sm transition-all duration-300 flex items-center justify-center gap-2 ${
+              !isSignUp
+                ? 'bg-background-dark text-white font-bold shadow-md'
+                : 'text-gray-400 hover:text-gray-300'
+            }`}
           >
-            🔑 Sign In
+            <span className="material-symbols-outlined text-lg">login</span>
+            Sign In
           </button>
           <button
             onClick={() => setIsSignUp(true)}
-            style={{
-              flex: 1,
-              padding: '12px 16px',
-              background: isSignUp ? 'white' : 'transparent',
-              color: isSignUp ? '#0f172a' : '#64748b',
-              border: 'none',
-              borderRadius: '8px',
-              cursor: 'pointer',
-              fontWeight: isSignUp ? 700 : 500,
-              fontSize: '14px',
-              transition: 'all 0.3s ease',
-              boxShadow: isSignUp ? '0 2px 8px rgba(0, 0, 0, 0.06)' : 'none',
-            }}
+            className={`flex-1 py-3 px-4 rounded-lg cursor-pointer text-sm transition-all duration-300 flex items-center justify-center gap-2 ${
+              isSignUp
+                ? 'bg-background-dark text-white font-bold shadow-md'
+                : 'text-gray-400 hover:text-gray-300'
+            }`}
           >
-            ✨ Sign Up
+            <span className="material-symbols-outlined text-lg">person_add</span>
+            Sign Up
           </button>
         </div>
 
         {/* Error Message */}
         {error && (
-          <div
-            style={{
-              background: 'linear-gradient(135deg, #fef2f2 0%, #fff5f5 100%)',
-              color: '#991b1b',
-              padding: '14px 16px',
-              borderRadius: '12px',
-              marginBottom: '20px',
-              fontSize: '14px',
-              border: '1px solid #fecaca',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '10px',
-            }}
-          >
-            <span style={{ fontSize: '18px' }}>⚠️</span>
+          <div className="bg-red-500/10 text-red-400 p-4 rounded-xl mb-5 text-sm border border-red-500/20 flex items-center gap-3">
+            <span className="material-symbols-outlined text-lg">error</span>
             <span>{error}</span>
           </div>
         )}
 
         {/* Success Message */}
         {success && (
-          <div
-            style={{
-              background: 'linear-gradient(135deg, #f0fdf4 0%, #f7fee7 100%)',
-              color: '#166534',
-              padding: '14px 16px',
-              borderRadius: '12px',
-              marginBottom: '20px',
-              fontSize: '14px',
-              border: '1px solid #bbf7d0',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '10px',
-            }}
-          >
-            <span style={{ fontSize: '18px' }}>✅</span>
+          <div className="bg-green-500/10 text-green-400 p-4 rounded-xl mb-5 text-sm border border-green-500/20 flex items-center gap-3">
+            <span className="material-symbols-outlined text-lg">check_circle</span>
             <span>{success}</span>
           </div>
         )}
 
         {/* Email Input */}
-        <div style={{ marginBottom: '20px' }}>
-          <label
-            style={{
-              display: 'block',
-              color: '#1e293b',
-              fontWeight: 600,
-              marginBottom: '10px',
-              fontSize: '14px',
-            }}
-          >
-            📧 Email Address
+        <div className="mb-5">
+          <label className="block text-gray-300 font-semibold mb-2 text-sm">
+            Email Address
           </label>
           <input
             type="email"
@@ -278,42 +146,15 @@ export default function LoginPage({ onLoginSuccess }: LoginPageProps) {
             onChange={(e) => setEmail(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder="you@example.com"
-            style={{
-              width: '100%',
-              padding: '12px 14px',
-              border: '2px solid #e2e8f0',
-              borderRadius: '10px',
-              fontSize: '14px',
-              boxSizing: 'border-box',
-              fontFamily: 'inherit',
-              background: '#f8fafc',
-              transition: 'all 0.3s ease',
-              color: '#0f172a',
-            }}
-            onFocus={(e) => {
-              (e.target as HTMLInputElement).style.borderColor = '#3b82f6';
-              (e.target as HTMLInputElement).style.background = 'white';
-            }}
-            onBlur={(e) => {
-              (e.target as HTMLInputElement).style.borderColor = '#e2e8f0';
-              (e.target as HTMLInputElement).style.background = '#f8fafc';
-            }}
+            className="w-full py-3 px-4 border-2 border-border-dark rounded-xl text-sm bg-surface-dark text-white placeholder-gray-500 transition-all duration-300 focus:border-primary focus:bg-background-dark focus:outline-none"
           />
         </div>
 
         {/* Username Input (Sign Up Only) */}
         {isSignUp && (
-          <div style={{ marginBottom: '20px' }}>
-            <label
-              style={{
-                display: 'block',
-                color: '#1e293b',
-                fontWeight: 600,
-                marginBottom: '10px',
-                fontSize: '14px',
-              }}
-            >
-              👤 Username
+          <div className="mb-5">
+            <label className="block text-gray-300 font-semibold mb-2 text-sm">
+              Username
             </label>
             <input
               type="text"
@@ -321,42 +162,15 @@ export default function LoginPage({ onLoginSuccess }: LoginPageProps) {
               onChange={(e) => setUsername(e.target.value)}
               onKeyPress={handleKeyPress}
               placeholder="your-username"
-              style={{
-                width: '100%',
-                padding: '12px 14px',
-                border: '2px solid #e2e8f0',
-                borderRadius: '10px',
-                fontSize: '14px',
-                boxSizing: 'border-box',
-                fontFamily: 'inherit',
-                background: '#f8fafc',
-                transition: 'all 0.3s ease',
-                color: '#0f172a',
-              }}
-              onFocus={(e) => {
-                (e.target as HTMLInputElement).style.borderColor = '#3b82f6';
-                (e.target as HTMLInputElement).style.background = 'white';
-              }}
-              onBlur={(e) => {
-                (e.target as HTMLInputElement).style.borderColor = '#e2e8f0';
-                (e.target as HTMLInputElement).style.background = '#f8fafc';
-              }}
+              className="w-full py-3 px-4 border-2 border-border-dark rounded-xl text-sm bg-surface-dark text-white placeholder-gray-500 transition-all duration-300 focus:border-primary focus:bg-background-dark focus:outline-none"
             />
           </div>
         )}
 
         {/* Password Input */}
-        <div style={{ marginBottom: '28px' }}>
-          <label
-            style={{
-              display: 'block',
-              color: '#1e293b',
-              fontWeight: 600,
-              marginBottom: '10px',
-              fontSize: '14px',
-            }}
-          >
-            🔒 Password
+        <div className="mb-7">
+          <label className="block text-gray-300 font-semibold mb-2 text-sm">
+            Password
           </label>
           <input
             type="password"
@@ -364,30 +178,11 @@ export default function LoginPage({ onLoginSuccess }: LoginPageProps) {
             onChange={(e) => setPassword(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder="••••••••"
-            style={{
-              width: '100%',
-              padding: '12px 14px',
-              border: '2px solid #e2e8f0',
-              borderRadius: '10px',
-              fontSize: '14px',
-              boxSizing: 'border-box',
-              fontFamily: 'inherit',
-              background: '#f8fafc',
-              transition: 'all 0.3s ease',
-              color: '#0f172a',
-            }}
-            onFocus={(e) => {
-              (e.target as HTMLInputElement).style.borderColor = '#3b82f6';
-              (e.target as HTMLInputElement).style.background = 'white';
-            }}
-            onBlur={(e) => {
-              (e.target as HTMLInputElement).style.borderColor = '#e2e8f0';
-              (e.target as HTMLInputElement).style.background = '#f8fafc';
-            }}
+            className="w-full py-3 px-4 border-2 border-border-dark rounded-xl text-sm bg-surface-dark text-white placeholder-gray-500 transition-all duration-300 focus:border-primary focus:bg-background-dark focus:outline-none"
           />
           {isSignUp && (
-            <p style={{ fontSize: '12px', color: '#94a3b8', marginTop: '8px', margin: 0 }}>
-              💡 Minimum 6 characters for security
+            <p className="text-xs text-gray-500 mt-2">
+              Minimum 6 characters for security
             </p>
           )}
         </div>
@@ -396,91 +191,41 @@ export default function LoginPage({ onLoginSuccess }: LoginPageProps) {
         <button
           onClick={handleAuth}
           disabled={loading}
-          style={{
-            width: '100%',
-            padding: '14px 16px',
-            background: loading
-              ? '#cbd5e1'
-              : 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
-            color: 'white',
-            border: 'none',
-            borderRadius: '10px',
-            fontSize: '16px',
-            fontWeight: 700,
-            cursor: loading ? 'not-allowed' : 'pointer',
-            transition: 'all 0.3s ease',
-            boxShadow: loading ? 'none' : '0 6px 20px rgba(59, 130, 246, 0.3)',
-            transform: loading ? 'scale(1)' : 'scale(1)',
-          }}
-          onMouseEnter={(e) => {
-            if (!loading) {
-              (e.target as HTMLButtonElement).style.transform = 'translateY(-2px)';
-              (e.target as HTMLButtonElement).style.boxShadow = '0 8px 24px rgba(59, 130, 246, 0.4)';
-            }
-          }}
-          onMouseLeave={(e) => {
-            if (!loading) {
-              (e.target as HTMLButtonElement).style.transform = 'translateY(0)';
-              (e.target as HTMLButtonElement).style.boxShadow = '0 6px 20px rgba(59, 130, 246, 0.3)';
-            }
-          }}
+          className={`w-full py-4 px-4 rounded-xl text-base font-bold cursor-pointer transition-all duration-300 flex items-center justify-center gap-2 ${
+            loading
+              ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
+              : 'bg-gradient-to-r from-primary to-purple-500 text-white shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 hover:-translate-y-0.5'
+          }`}
         >
           {loading ? (
-            <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
-              <span style={{ display: 'inline-block', animation: 'spin 1s linear infinite' }}>⏳</span>
+            <>
+              <span className="material-symbols-outlined animate-spin text-lg">progress_activity</span>
               {isSignUp ? 'Creating Account...' : 'Signing In...'}
-            </span>
+            </>
           ) : isSignUp ? (
-            '✨ Create Account'
+            <>
+              <span className="material-symbols-outlined text-lg">person_add</span>
+              Create Account
+            </>
           ) : (
-            '🚀 Sign In'
+            <>
+              <span className="material-symbols-outlined text-lg">login</span>
+              Sign In
+            </>
           )}
         </button>
 
         {/* Toggle Auth Mode */}
-        <p
-          style={{
-            textAlign: 'center',
-            color: '#64748b',
-            fontSize: '14px',
-            marginTop: '24px',
-            margin: '24px 0 0 0',
-          }}
-        >
+        <p className="text-center text-gray-400 text-sm mt-6">
           {isSignUp ? 'Already have an account?' : "Don't have an account?"}{' '}
           <button
             onClick={() => setIsSignUp(!isSignUp)}
-            style={{
-              background: 'none',
-              border: 'none',
-              color: '#3b82f6',
-              cursor: 'pointer',
-              fontWeight: 700,
-              textDecoration: 'none',
-              fontSize: '14px',
-              transition: 'all 0.2s ease',
-              padding: '0',
-            }}
-            onMouseEnter={(e) => {
-              (e.target as HTMLButtonElement).style.color = '#8b5cf6';
-              (e.target as HTMLButtonElement).style.textDecoration = 'underline';
-            }}
-            onMouseLeave={(e) => {
-              (e.target as HTMLButtonElement).style.color = '#3b82f6';
-              (e.target as HTMLButtonElement).style.textDecoration = 'none';
-            }}
+            className="bg-transparent border-none text-primary cursor-pointer font-bold text-sm transition-all duration-200 hover:text-purple-400 hover:underline"
           >
             {isSignUp ? 'Sign In' : 'Sign Up'}
           </button>
         </p>
       </div>
-
-      <style>{`
-        @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
-      `}</style>
     </div>
   );
 }

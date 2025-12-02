@@ -104,172 +104,51 @@ export function RepoSetup({ owner, userId, onRepoCreated }: RepoSetupProps) {
   }
 
   return (
-    <div
-      style={{
-        minHeight: '100vh',
-        background: '#ffffff',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontFamily: 'Inter, system-ui, Arial, sans-serif',
-        padding: '20px',
-      }}
-    >
+    <div className="min-h-screen bg-background-dark flex justify-center items-center font-display p-5">
       {/* Background decorative elements */}
-      <div
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          pointerEvents: 'none',
-          overflow: 'hidden',
-        }}
-      >
-        <div
-          style={{
-            position: 'absolute',
-            top: '-100px',
-            right: '-100px',
-            width: '300px',
-            height: '300px',
-            background: 'radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%)',
-            borderRadius: '50%',
-          }}
-        />
-        <div
-          style={{
-            position: 'absolute',
-            bottom: '-150px',
-            left: '-150px',
-            width: '400px',
-            height: '400px',
-            background: 'radial-gradient(circle, rgba(59, 130, 246, 0.08) 0%, transparent 70%)',
-            borderRadius: '50%',
-          }}
-        />
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-[-100px] right-[-100px] w-[300px] h-[300px] bg-[radial-gradient(circle,rgba(99,102,241,0.1)_0%,transparent_70%)] rounded-full" />
+        <div className="absolute bottom-[-150px] left-[-150px] w-[400px] h-[400px] bg-[radial-gradient(circle,rgba(59,130,246,0.08)_0%,transparent_70%)] rounded-full" />
       </div>
 
-      <div
-        style={{
-          background: 'white',
-          borderRadius: '20px',
-          padding: '48px',
-          boxShadow: '0 10px 40px rgba(0, 0, 0, 0.08)',
-          maxWidth: '550px',
-          width: '100%',
-          position: 'relative',
-          zIndex: 1,
-          border: '1px solid #f0f0f0',
-        }}
-      >
+      <div className="bg-panel-dark rounded-2xl p-12 shadow-2xl max-w-[550px] w-full relative z-10 border border-border-dark">
         {/* Header Section */}
-        <div style={{ marginBottom: '40px' }}>
-          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '16px' }}>
-            <div
-              style={{
-                width: '56px',
-                height: '56px',
-                background: 'linear-gradient(135deg, #6366f1 0%, #3b82f6 100%)',
-                borderRadius: '12px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '28px',
-              }}
-            >
-              📦
+        <div className="mb-10">
+          <div className="flex justify-center mb-4">
+            <div className="w-14 h-14 bg-gradient-to-br from-primary to-purple-500 rounded-xl flex items-center justify-center shadow-lg shadow-primary/20">
+              <span className="material-symbols-outlined text-white text-2xl">folder_data</span>
             </div>
           </div>
-          <h1
-            style={{
-              textAlign: 'center',
-              color: '#1f2937',
-              marginBottom: '8px',
-              fontSize: '32px',
-              fontWeight: 700,
-              letterSpacing: '-0.5px',
-            }}
-          >
+          <h1 className="text-center text-white mb-2 text-3xl font-bold tracking-tight">
             Repository Setup
           </h1>
-          <p style={{ textAlign: 'center', color: '#6b7280', fontSize: '15px', marginBottom: '4px' }}>
+          <p className="text-center text-gray-400 text-sm mb-1">
             Welcome to GitTogether
           </p>
-          <p style={{ textAlign: 'center', color: '#9ca3af', fontSize: '13px' }}>
-            Owner: <span style={{ fontWeight: 600, color: '#6b7280' }}>{owner}</span>
+          <p className="text-center text-gray-500 text-xs">
+            Owner: <span className="font-semibold text-gray-400">{owner}</span>
           </p>
         </div>
 
         {/* Step: Choice */}
         {step === 'choice' && (
           <div>
-            <p style={{ color: '#6b7280', marginBottom: '32px', fontSize: '15px', textAlign: 'center' }}>
+            <p className="text-gray-400 mb-8 text-sm text-center">
               Choose how you'd like to get started
             </p>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <div className="flex flex-col gap-4">
               <button
                 onClick={() => setStep('create')}
-                style={{
-                  width: '100%',
-                  padding: '20px 24px',
-                  background: 'linear-gradient(135deg, #6366f1 0%, #3b82f6 100%)',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '12px',
-                  fontSize: '16px',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  transition: 'all 0.3s ease',
-                  boxShadow: '0 4px 15px rgba(99, 102, 241, 0.2)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '12px',
-                }}
-                onMouseEnter={(e) => {
-                  (e.target as HTMLButtonElement).style.transform = 'translateY(-2px)';
-                  (e.target as HTMLButtonElement).style.boxShadow = '0 6px 20px rgba(99, 102, 241, 0.3)';
-                }}
-                onMouseLeave={(e) => {
-                  (e.target as HTMLButtonElement).style.transform = 'translateY(0)';
-                  (e.target as HTMLButtonElement).style.boxShadow = '0 4px 15px rgba(99, 102, 241, 0.2)';
-                }}
+                className="w-full py-5 px-6 bg-gradient-to-r from-primary to-purple-500 text-white rounded-xl text-base font-semibold cursor-pointer transition-all duration-300 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 flex items-center justify-center gap-3"
               >
-                <span style={{ fontSize: '20px' }}>✨</span>
+                <span className="material-symbols-outlined text-xl">add_circle</span>
                 <span>Create New Repository</span>
               </button>
               <button
                 onClick={() => setStep('list')}
-                style={{
-                  width: '100%',
-                  padding: '20px 24px',
-                  background: '#f9fafb',
-                  color: '#1f2937',
-                  border: '2px solid #e5e7eb',
-                  borderRadius: '12px',
-                  fontSize: '16px',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  transition: 'all 0.3s ease',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '12px',
-                }}
-                onMouseEnter={(e) => {
-                  (e.target as HTMLButtonElement).style.background = '#f3f4f6';
-                  (e.target as HTMLButtonElement).style.borderColor = '#d1d5db';
-                  (e.target as HTMLButtonElement).style.transform = 'translateY(-2px)';
-                }}
-                onMouseLeave={(e) => {
-                  (e.target as HTMLButtonElement).style.background = '#f9fafb';
-                  (e.target as HTMLButtonElement).style.borderColor = '#e5e7eb';
-                  (e.target as HTMLButtonElement).style.transform = 'translateY(0)';
-                }}
+                className="w-full py-5 px-6 bg-surface-dark text-gray-200 border-2 border-border-dark rounded-xl text-base font-semibold cursor-pointer transition-all duration-300 hover:bg-background-dark hover:border-gray-600 hover:-translate-y-0.5 flex items-center justify-center gap-3"
               >
-                <span style={{ fontSize: '20px' }}>📂</span>
+                <span className="material-symbols-outlined text-xl">folder_open</span>
                 <span>Select Existing Repository</span>
               </button>
             </div>
@@ -279,16 +158,8 @@ export function RepoSetup({ owner, userId, onRepoCreated }: RepoSetupProps) {
         {/* Step: Create */}
         {step === 'create' && (
           <div>
-            <div style={{ marginBottom: '28px' }}>
-              <label
-                style={{
-                  display: 'block',
-                  color: '#1f2937',
-                  fontWeight: 600,
-                  marginBottom: '12px',
-                  fontSize: '15px',
-                }}
-              >
+            <div className="mb-7">
+              <label className="block text-gray-300 font-semibold mb-3 text-sm">
                 Repository Name
               </label>
               <input
@@ -296,128 +167,58 @@ export function RepoSetup({ owner, userId, onRepoCreated }: RepoSetupProps) {
                 value={newRepoName}
                 onChange={(e) => setNewRepoName(e.target.value)}
                 placeholder="my-awesome-project"
-                style={{
-                  width: '100%',
-                  padding: '14px 16px',
-                  border: '2px solid #e5e7eb',
-                  borderRadius: '10px',
-                  fontSize: '15px',
-                  boxSizing: 'border-box',
-                  transition: 'all 0.3s ease',
-                  background: '#f9fafb',
-                  color: '#1f2937',
-                  fontFamily: 'inherit',
-                }}
-                onFocus={(e) => {
-                  (e.target as HTMLInputElement).style.borderColor = '#6366f1';
-                  (e.target as HTMLInputElement).style.background = 'white';
-                }}
-                onBlur={(e) => {
-                  (e.target as HTMLInputElement).style.borderColor = '#e5e7eb';
-                  (e.target as HTMLInputElement).style.background = '#f9fafb';
-                }}
+                className="w-full py-3 px-4 border-2 border-border-dark rounded-xl text-sm bg-surface-dark text-white placeholder-gray-500 transition-all duration-300 focus:border-primary focus:bg-background-dark focus:outline-none"
               />
-              <p style={{ fontSize: '12px', color: '#9ca3af', marginTop: '8px' }}>
+              <p className="text-xs text-gray-500 mt-2">
                 Use lowercase letters, numbers, and hyphens. No spaces.
               </p>
             </div>
 
             {error && (
-              <div
-                style={{
-                  background: '#fef2f2',
-                  color: '#991b1b',
-                  padding: '14px 16px',
-                  borderRadius: '10px',
-                  marginBottom: '20px',
-                  fontSize: '14px',
-                  border: '1px solid #fecaca',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '10px',
-                }}
-              >
-                <span style={{ fontSize: '18px' }}>❌</span>
+              <div className="bg-red-500/10 text-red-400 p-4 rounded-xl mb-5 text-sm border border-red-500/20 flex items-center gap-3">
+                <span className="material-symbols-outlined text-lg">error</span>
                 {error}
               </div>
             )}
 
             {success && (
-              <div
-                style={{
-                  background: '#f0fdf4',
-                  color: '#166534',
-                  padding: '14px 16px',
-                  borderRadius: '10px',
-                  marginBottom: '20px',
-                  fontSize: '14px',
-                  border: '1px solid #bbf7d0',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '10px',
-                }}
-              >
-                <span style={{ fontSize: '18px' }}>✅</span>
+              <div className="bg-green-500/10 text-green-400 p-4 rounded-xl mb-5 text-sm border border-green-500/20 flex items-center gap-3">
+                <span className="material-symbols-outlined text-lg">check_circle</span>
                 {success}
               </div>
             )}
 
-            <div style={{ display: 'flex', gap: '12px' }}>
+            <div className="flex gap-3">
               <button
                 onClick={() => {
                   setStep('choice');
                   setNewRepoName('');
                   setError('');
                 }}
-                style={{
-                  flex: 1,
-                  padding: '12px 16px',
-                  background: '#f3f4f6',
-                  color: '#374151',
-                  border: '2px solid #e5e7eb',
-                  borderRadius: '10px',
-                  cursor: 'pointer',
-                  fontWeight: 600,
-                  fontSize: '14px',
-                  transition: 'all 0.3s ease',
-                }}
-                onMouseEnter={(e) => {
-                  (e.target as HTMLButtonElement).style.background = '#e5e7eb';
-                }}
-                onMouseLeave={(e) => {
-                  (e.target as HTMLButtonElement).style.background = '#f3f4f6';
-                }}
+                className="flex-1 py-3 px-4 bg-surface-dark text-gray-300 border-2 border-border-dark rounded-xl cursor-pointer font-semibold text-sm transition-all duration-300 hover:bg-background-dark"
               >
-                ← Back
+                Back
               </button>
               <button
                 onClick={createRepo}
                 disabled={loading}
-                style={{
-                  flex: 1,
-                  padding: '12px 16px',
-                  background: loading ? '#d1d5db' : 'linear-gradient(135deg, #6366f1 0%, #3b82f6 100%)',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '10px',
-                  cursor: loading ? 'not-allowed' : 'pointer',
-                  fontWeight: 600,
-                  fontSize: '14px',
-                  transition: 'all 0.3s ease',
-                  opacity: loading ? 0.7 : 1,
-                }}
-                onMouseEnter={(e) => {
-                  if (!loading) {
-                    (e.target as HTMLButtonElement).style.transform = 'translateY(-2px)';
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (!loading) {
-                    (e.target as HTMLButtonElement).style.transform = 'translateY(0)';
-                  }
-                }}
+                className={`flex-1 py-3 px-4 rounded-xl font-semibold text-sm transition-all duration-300 flex items-center justify-center gap-2 ${
+                  loading
+                    ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
+                    : 'bg-gradient-to-r from-primary to-purple-500 text-white cursor-pointer hover:-translate-y-0.5'
+                }`}
               >
-                {loading ? '⏳ Creating...' : '🚀 Create Repository'}
+                {loading ? (
+                  <>
+                    <span className="material-symbols-outlined animate-spin text-lg">progress_activity</span>
+                    Creating...
+                  </>
+                ) : (
+                  <>
+                    <span className="material-symbols-outlined text-lg">rocket_launch</span>
+                    Create Repository
+                  </>
+                )}
               </button>
             </div>
           </div>
@@ -427,133 +228,60 @@ export function RepoSetup({ owner, userId, onRepoCreated }: RepoSetupProps) {
         {step === 'list' && (
           <div>
             {error && (
-              <div
-                style={{
-                  background: '#fef2f2',
-                  color: '#991b1b',
-                  padding: '14px 16px',
-                  borderRadius: '10px',
-                  marginBottom: '20px',
-                  fontSize: '14px',
-                  border: '1px solid #fecaca',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '10px',
-                }}
-              >
-                <span style={{ fontSize: '18px' }}>❌</span>
+              <div className="bg-red-500/10 text-red-400 p-4 rounded-xl mb-5 text-sm border border-red-500/20 flex items-center gap-3">
+                <span className="material-symbols-outlined text-lg">error</span>
                 {error}
               </div>
             )}
 
             {loading && (
-              <div style={{ textAlign: 'center', padding: '40px 20px' }}>
-                <div
-                  style={{
-                    fontSize: '32px',
-                    marginBottom: '16px',
-                    animation: 'spin 2s linear infinite',
-                  }}
-                >
-                  ⏳
-                </div>
-                <p style={{ color: '#6b7280', fontSize: '15px', fontWeight: 500 }}>
+              <div className="text-center py-10">
+                <span className="material-symbols-outlined text-4xl text-primary animate-spin mb-4 block">progress_activity</span>
+                <p className="text-gray-400 text-sm font-medium">
                   Loading your repositories...
                 </p>
               </div>
             )}
 
             {!loading && repos.length === 0 && (
-              <div style={{ textAlign: 'center', padding: '40px 20px' }}>
-                <div style={{ fontSize: '48px', marginBottom: '16px' }}>📭</div>
-                <p style={{ color: '#1f2937', fontSize: '15px', fontWeight: 600, marginBottom: '8px' }}>
+              <div className="text-center py-10">
+                <span className="material-symbols-outlined text-5xl text-gray-600 mb-4 block">inbox</span>
+                <p className="text-gray-300 text-sm font-semibold mb-2">
                   No repositories found
                 </p>
-                <p style={{ color: '#6b7280', fontSize: '14px', marginBottom: '24px' }}>
+                <p className="text-gray-500 text-sm mb-6">
                   Create your first repository to get started!
                 </p>
                 <button
                   onClick={() => setStep('create')}
-                  style={{
-                    padding: '12px 24px',
-                    background: 'linear-gradient(135deg, #6366f1 0%, #3b82f6 100%)',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '10px',
-                    cursor: 'pointer',
-                    fontSize: '14px',
-                    fontWeight: 600,
-                    transition: 'all 0.3s ease',
-                    boxShadow: '0 4px 15px rgba(99, 102, 241, 0.2)',
-                  }}
-                  onMouseEnter={(e) => {
-                    (e.target as HTMLButtonElement).style.transform = 'translateY(-2px)';
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.target as HTMLButtonElement).style.transform = 'translateY(0)';
-                  }}
+                  className="py-3 px-6 bg-gradient-to-r from-primary to-purple-500 text-white rounded-xl cursor-pointer text-sm font-semibold transition-all duration-300 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5"
                 >
-                  ✨ Create your first repository
+                  Create your first repository
                 </button>
               </div>
             )}
 
             {!loading && repos.length > 0 && (
               <div>
-                <div
-                  style={{
-                    background: '#f0f9ff',
-                    padding: '16px',
-                    borderRadius: '10px',
-                    marginBottom: '24px',
-                    border: '1px solid #e0f2fe',
-                  }}
-                >
-                  <p style={{ color: '#0369a1', fontSize: '14px', fontWeight: 600, margin: 0 }}>
-                    📦 Found {repos.length} repositor{repos.length === 1 ? 'y' : 'ies'}
+                <div className="bg-primary/10 p-4 rounded-xl mb-6 border border-primary/20">
+                  <p className="text-primary text-sm font-semibold flex items-center gap-2">
+                    <span className="material-symbols-outlined text-lg">folder</span>
+                    Found {repos.length} repositor{repos.length === 1 ? 'y' : 'ies'}
                   </p>
                 </div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '24px' }}>
+                <div className="flex flex-col gap-3 mb-6 max-h-64 overflow-y-auto">
                   {repos.map((repo) => (
                     <button
                       key={repo.id}
                       onClick={() => selectRepo(repo.name)}
                       disabled={loading}
-                      style={{
-                        padding: '16px 18px',
-                        background: '#f9fafb',
-                        color: '#1f2937',
-                        border: '2px solid #e5e7eb',
-                        borderRadius: '10px',
-                        cursor: loading ? 'not-allowed' : 'pointer',
-                        fontSize: '15px',
-                        fontWeight: 500,
-                        textAlign: 'left',
-                        transition: 'all 0.2s ease',
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                      }}
-                      onMouseEnter={(e) => {
-                        if (!loading) {
-                          (e.target as HTMLButtonElement).style.background = '#f3f4f6';
-                          (e.target as HTMLButtonElement).style.borderColor = '#d1d5db';
-                          (e.target as HTMLButtonElement).style.transform = 'translateX(4px)';
-                        }
-                      }}
-                      onMouseLeave={(e) => {
-                        if (!loading) {
-                          (e.target as HTMLButtonElement).style.background = '#f9fafb';
-                          (e.target as HTMLButtonElement).style.borderColor = '#e5e7eb';
-                          (e.target as HTMLButtonElement).style.transform = 'translateX(0)';
-                        }
-                      }}
+                      className="py-4 px-4 bg-surface-dark text-gray-200 border-2 border-border-dark rounded-xl cursor-pointer text-sm font-medium text-left transition-all duration-200 flex justify-between items-center hover:bg-background-dark hover:border-gray-600 hover:translate-x-1 disabled:cursor-not-allowed disabled:opacity-50"
                     >
-                      <span style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                        <span style={{ fontSize: '18px' }}>📦</span>
-                        <span style={{ fontWeight: 600 }}>{repo.name}</span>
+                      <span className="flex items-center gap-3">
+                        <span className="material-symbols-outlined text-primary text-lg">folder</span>
+                        <span className="font-semibold">{repo.name}</span>
                       </span>
-                      <span style={{ fontSize: '12px', color: '#9ca3af', whiteSpace: 'nowrap' }}>
+                      <span className="text-xs text-gray-500 whitespace-nowrap">
                         {new Date(repo.created_at).toLocaleDateString()}
                       </span>
                     </button>
@@ -564,37 +292,13 @@ export function RepoSetup({ owner, userId, onRepoCreated }: RepoSetupProps) {
 
             <button
               onClick={() => setStep('choice')}
-              style={{
-                width: '100%',
-                padding: '12px 16px',
-                background: '#f3f4f6',
-                color: '#374151',
-                border: '2px solid #e5e7eb',
-                borderRadius: '10px',
-                cursor: 'pointer',
-                fontWeight: 600,
-                fontSize: '14px',
-                transition: 'all 0.3s ease',
-              }}
-              onMouseEnter={(e) => {
-                (e.target as HTMLButtonElement).style.background = '#e5e7eb';
-              }}
-              onMouseLeave={(e) => {
-                (e.target as HTMLButtonElement).style.background = '#f3f4f6';
-              }}
+              className="w-full py-3 px-4 bg-surface-dark text-gray-300 border-2 border-border-dark rounded-xl cursor-pointer font-semibold text-sm transition-all duration-300 hover:bg-background-dark"
             >
-              ← Back
+              Back
             </button>
           </div>
         )}
       </div>
-
-      <style>{`
-        @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
-      `}</style>
     </div>
   );
 }
